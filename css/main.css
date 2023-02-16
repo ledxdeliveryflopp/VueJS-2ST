@@ -1,11 +1,11 @@
 * {
     box-sizing: border-box;
-    font-family: Tahoma;
+    /*font-family: Tahoma;*/
 }
 
-body {
-    background: #a9cdff;
-}
+/*body {*/
+/*    background: #a9cdff;*/
+/*}*/
 
 .column {
     float: left;
