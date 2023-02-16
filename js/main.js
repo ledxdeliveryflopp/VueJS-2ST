@@ -9,7 +9,7 @@ Vue.component('column', {
             <newCard></newCard>
         <p class="error" v-for="error in errors">{{ error }}</p>
                 <column_1 :column_1="column_1"></column_1>
-<!--                <column_2 :column_2="column_2"></column_2>-->
+                <column_2 :column_2="column_2"></column_2>
 <!--                <column_3 :column_3="column_3"></column_3>-->
             </div>
  </section>
@@ -17,7 +17,7 @@ Vue.component('column', {
     data() {
         return {
             column_1: [],
-            // column_2: [],
+            column_2: [],
             // column_3: [],
             errors: [],
         }
@@ -25,11 +25,24 @@ Vue.component('column', {
     mounted() {
         // создание заметки
         eventBus.$on('addColumn_1', ColumnCard => {
-            this.errors = []
+
             if (this.column_1.length < 3) {
+                this.errors.length = 0
                 this.column_1.push(ColumnCard)
             } else {
-                this.errors.push('В первой колонке должно быть не более трех заметок.')
+                this.errors.length = 0
+                this.errors.push('макс коллво заметок в 1 столбце')
+            }
+                })
+
+        eventBus.$on('addColumn_2', ColumnCard => {
+            if (this.column_2.length < 5) {
+                this.errors.length = 0
+                this.column_2.push(ColumnCard)
+                this.column_1.splice(this.column_1.indexOf(ColumnCard), 1)
+            } else {
+                this.errors.length = 0
+                this.errors.push('Вы не можете редактировать первую колонку, пока во второй есть 5 карточек.')
             }
         })
     }
@@ -82,7 +95,7 @@ Vue.component('newCard', {
                 date: this.date,
                 // date: null,
                 status: 0,
-                errors: [],
+                // errors: [],
             }
             eventBus.$emit('addColumn_1', card)
             this.name = null;
@@ -123,45 +136,52 @@ Vue.component('column_1', {
             type: Array,
         }
     },
-    // methods: {
-    //     changeCompleted(card, task) {
-    //         task.completed = true
-    //         card.status += 1
-    //         let count = 0
-    //         for(let i = 0; i < 5; i++){
-    //             if (card.points[i].name != null) {
-    //                 count++
-    //             }
-    //         }
-    //         if ((card.status / count) * 100 >= 50) {
-    //             eventBus.$emit('addColumn_2', card)
-    //         }
-    //         if ((card.status / count) * 100 === 100) {
-    //             card.date = new Date().toLocaleString()
-    //             eventBus.$emit('addColumn1-3', card)
-    //         }
-    //     },
-    // },
+    methods: {
+        changeCompleted(card, task) {
+            task.completed = true
+            card.status += 1
+            let count = 0
+            for(let i = 0; i < 3; i++){
+                if (card.points[i].name != null) {
+                    count++
+                }
+            }
+            if ((card.status / count) * 100 >= 50) {
+                eventBus.$emit('addColumn_2', card)
+            }
+            if ((card.status / count) * 100 === 100) {
+                card.date = new Date().toLocaleString()
+                eventBus.$emit('addColumn1-3', card)
+            }
+        },
+    },
 
 })
 
-// Vue.component('column_2', {
-//     template: `
-//         <section id="main" class="main-alt">
-//             <div class="column column__two">
-//                 <div class="card" v-for="card in column_2"><p>{{ card.name }}</p>
-//                     <div class="tasks" v-for="task in card.points"
-//                         v-if="task.name != null"
-//                         @click="changeCompleted(card, task)"
-//                         :class="{completed: task.completed}">
-//                         {{ task.name }}
-//                     </div>
-//                 </div>
-//             </div>
-//         </section>
-//     `,
-//
-// })
+Vue.component('column_2', {
+    template: `
+        <section id="main" class="main-alt">
+            <div class="column column__two">
+                <div class="card" v-for="card in column_2"><p>{{ card.name }}</p>
+                    <div class="tasks" v-for="task in card.points"
+                        v-if="task.name != null"
+                        @click="changeCompleted(card, task)"
+                        :class="{completed: task.completed}">
+                        {{ task.name }}
+                    </div>
+                </div>
+            </div>
+        </section>
+    `,
+    props: {
+        column_2: {
+            type: Array,
+        },
+        card: {
+            type: Object,
+        },
+    },
+})
 //
 // Vue.component('column_3', {
 //     template: `
