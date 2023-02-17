@@ -10,7 +10,7 @@ Vue.component('column', {
         <p class="error" v-for="error in errors">{{ error }}</p>
                 <column_1 :column_1="column_1"></column_1>
                 <column_2 :column_2="column_2"></column_2>
-<!--                <column_3 :column_3="column_3"></column_3>-->
+                <column_3 :column_3="column_3"></column_3>
             </div>
  </section>
     `,
@@ -18,7 +18,7 @@ Vue.component('column', {
         return {
             column_1: [],
             column_2: [],
-            // column_3: [],
+            column_3: [],
             errors: [],
         }
     },
@@ -43,6 +43,16 @@ Vue.component('column', {
             } else {
                 this.errors.length = 0
                 this.errors.push('Вы не можете редактировать первую колонку, пока во второй есть 5 карточек.')
+            }
+        })
+        eventBus.$on('addColumn_3', ColumnCard => {
+            if (this.column_3.length < 5) {
+                this.errors.length = 0
+                this.column_3.push(ColumnCard)
+                this.column_2.splice(this.column_2.indexOf(ColumnCard), 1)
+            } else {
+                this.errors.length = 0
+                this.errors.push('шлепа')
             }
         })
     }
@@ -137,24 +147,17 @@ Vue.component('column_1', {
         }
     },
     methods: {
-        changeCompleted(card, task) {
-            task.completed = true
-            card.status += 1
-            let count = 0
-            for(let i = 0; i < 3; i++){
-                if (card.points[i].name != null) {
-                    count++
-                }
-            }
-            if ((card.status / count) * 100 >= 50) {
-                eventBus.$emit('addColumn_2', card)
-            }
-            if ((card.status / count) * 100 === 100) {
-                card.date = new Date().toLocaleString()
-                eventBus.$emit('addColumn1-3', card)
-            }
-        },
-    },
+        changeCompleted(card) {
+            eventBus.$emit('addColumn_2', card)
+
+        }
+    }
+    //         if ((card.status / count) * 100 === 100) {
+    //             // card.date = new Date().toLocaleString()
+    //             eventBus.$emit('addColumn_3', card)
+    //         }
+    //     },
+    // },
 
 })
 
@@ -177,29 +180,48 @@ Vue.component('column_2', {
         column_2: {
             type: Array,
         },
+        column_3: {
+            type: Array,
+        },
+        card: {
+            type: Object,
+        },
+    },
+    methods: {
+        changeCompleted(card, task) {
+                eventBus.$emit('addColumn_3', card)
+            }
+        }
+
+})
+
+Vue.component('column_3', {
+    template: `
+        <section id="main" class="main-alt">
+            <div class="column column__three">
+                <div class="card" v-for="card in column_3"><p>{{ card.name }}</p>
+                    <div class="tasks" v-for="task in card.points"
+                        v-if="task.name != null"
+                        @click="changeCompleted(card, task)"
+                        :class="{completed: task.completed}">
+                        {{ task.name }}
+                    </div>
+<!--                        <p>{{ card.date }}</p>-->
+                </div>
+            </div>
+        </section>
+    `,
+    props: {
+        column_3: {
+            type: Array,
+        },
         card: {
             type: Object,
         },
     },
 })
-//
-// Vue.component('column_3', {
-//     template: `
-//         <section id="main" class="main-alt">
-//             <div class="column column__three">
-//                 <div class="card" v-for="card in column_3"><p>{{ card.name }}</p>
-//                     <div class="tasks" v-for="task in card.points"
-//                         v-if="task.name != null"
-//                         @click="changeCompleted(card, task)"
-//                         :class="{completed: task.completed}">
-//                         {{ task.name }}
-//                     </div>
-//                         <p>{{ card.date }}</p>
-//                 </div>
-//             </div>
-//         </section>
-//     `,
-// })
+
+
 
 let app = new Vue({
     el: '#app',
