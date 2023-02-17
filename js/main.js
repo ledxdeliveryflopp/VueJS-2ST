@@ -46,7 +46,7 @@ Vue.component('column', {
             }
         })
         eventBus.$on('addColumn_3', ColumnCard => {
-            if (this.column_3.length < 5) {
+            if (this.column_2.length === 5) {
                 this.errors.length = 0
                 this.column_3.push(ColumnCard)
                 this.column_2.splice(this.column_2.indexOf(ColumnCard), 1)
@@ -72,12 +72,36 @@ Vue.component('newCard', {
                 <input required type="text" id="name" placeholder="Введите название заметки"/>
             </div>
             
-            <input required type="text" id="point point__1" v-model="point_1" placeholder="Первый пункт"/>
+            <input type="text" id="point point__1" v-model="point_1" placeholder="Первый пункт"/>
 
-            <input required type="text" id="point point__2" v-model="point_2" placeholder="Второй пункт"/>
+            <input type="text" id="point point__2" v-model="point_2" placeholder="Второй пункт"/>
 
-            <input required type="text" id="point point__3" v-model="point_3" placeholder="Третий пункт"/> 
- 
+            <input type="text" id="point point__3" v-model="point_3" placeholder="Третий пункт"/> 
+            <br>
+            <input type="text"  placeholder="Четвертый пункт" v-show ="point_4">
+            <br>
+             <input type="text"  placeholder="Пятый пункт" v-show="point_5">
+
+        </div>
+        <div class="plus_minus_p">
+        <p>Добавить или убавить поле для заметки</p>
+        </div>
+            <div class="minus_plus">
+                 
+                   <p class="plus">
+                        <button type='button' @click="addnote"> + </button>
+                   </p>
+                   
+                   <p class="minus">
+<!--                        <button type='button' @click="removenote"> - </button>-->
+                   </p>
+            </div>
+            
+            <div>                    
+                <p class="sub">
+                        <input type="submit" value="Отправить"> 
+                </p>
+            </div>
         </div>
             <div class="form__control">
                 <button class="btn">Отправить</button>
@@ -91,17 +115,26 @@ Vue.component('newCard', {
             point_1: null,
             point_2: null,
             point_3: null,
+            point_4: null,
+            point_5: null,
             date: null,
             errors: [],
         }
     },
     methods: {
+        addnote() {
+            if (this.point_4 === null) {
+                this.point_4 = true
+            }
+        },
         Submit() {
             let card = {
                 name: this.name,
                 points: [{name: this.point_1,},
                     {name: this.point_2,},
-                    {name: this.point_3,}],
+                    {name: this.point_3,},
+                    {name: this.point_4,},
+                    {name: this.point_5,}],
                 date: this.date,
                 // date: null,
                 status: 0,
@@ -112,10 +145,28 @@ Vue.component('newCard', {
             this.point_1 = null
             this.point_2 = null
             this.point_3 = null
-        }
-    }
+            this.point_4 = null
+            this.point_5 = null
+        },
 
-})
+            // if (this.point_4 === true) {
+            //     return this.point_5 = null
+            // }
+
+        },
+        // removenote() {
+        //
+        //     if (this.point_5 === true) {
+        //         return  this.point_5 = false
+        //     }
+        //
+        //     if (this.point_4 === true) {
+        //         return  this.point_4 = false
+        //     }
+        }
+
+
+)
 
 Vue.component('column_1', {
     template: `
