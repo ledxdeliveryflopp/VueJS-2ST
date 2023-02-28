@@ -59,28 +59,28 @@ Vue.component('column', {
 })
 
 Vue.component('newCard', {
-    template: `
+        template: `
     <section id="main" class="main-alt">
     
         <form class="row" @submit.prevent="Submit">
         
             <p class="main__text">Заметки</p>
-            
+            <p class="error" v-for="error in errors">{{ error }}</p>
         <div class="form__control">
                 
             <div class="form__name">
                 <input required type="text" id="name" placeholder="Введите название заметки"/>
             </div>
             
-            <input type="text" id="point point__1" v-model="point_1" placeholder="Первый пункт"/>
+            <input required type="text"  v-model="point_1" placeholder="Первый пункт"/>
 
-            <input type="text" id="point point__2" v-model="point_2" placeholder="Второй пункт"/>
+            <input required type="text"  v-model="point_2" placeholder="Второй пункт"/>
 
-            <input type="text" id="point point__3" v-model="point_3" placeholder="Третий пункт"/> 
+            <input required type="text"  v-model="point_3" placeholder="Третий пункт"/> 
             <br>
-            <input type="text"  placeholder="Четвертый пункт" v-show ="point_4">
+            <input type="text"  v-model="point_4"  placeholder="Четвертый пункт" v-show ="note4">
             <br>
-             <input type="text"  placeholder="Пятый пункт" v-show="point_5">
+             <input type="text" v-model="point_5"  placeholder="Пятый пункт" v-show="note5">
 
         </div>
         <div class="plus_minus_p">
@@ -89,11 +89,11 @@ Vue.component('newCard', {
             <div class="minus_plus">
                  
                    <p class="plus">
-                        <button type='button' @click="addnote"> + </button>
+                        <button type='button' @click="addField"> + </button>
                    </p>
                    
                    <p class="minus">
-<!--                        <button type='button' @click="removenote"> - </button>-->
+                        <button type='button' @click="removeField"> - </button>
                    </p>
             </div>
             
@@ -109,64 +109,69 @@ Vue.component('newCard', {
         </form>
     </section>
     `,
-    data() {
-        return {
-            name: null,
-            point_1: null,
-            point_2: null,
-            point_3: null,
-            point_4: null,
-            point_5: null,
-            date: null,
-            errors: [],
-        }
-    },
-    methods: {
-        addnote() {
-            if (this.point_4 === null) {
-                this.point_4 = true
+        data() {
+            return {
+                note4: false,
+                note5: false,
+                name: null,
+                point_1: null,
+                point_2: null,
+                point_3: null,
+                point_4: null,
+                point_5: null,
+                date: null,
             }
         },
-        Submit() {
-            let card = {
-                name: this.name,
-                points: [{name: this.point_1,},
-                    {name: this.point_2,},
-                    {name: this.point_3,},
-                    {name: this.point_4,},
-                    {name: this.point_5,}],
-                date: this.date,
-                // date: null,
-                status: 0,
-                // errors: [],
+        methods: {
+            addField() {
+                if (this.note4 === false) {
+                    console.log('1')
+                    return this.note4 = true
+                } else {
+                    console.log('2')
+                    return this.note5 = true
+                }
+
+            },
+            removeField() {
+
+                if (this.note5 === true) {
+                    return this.note5 = false
+                }
+
+                if (this.note4 === true) {
+                    return this.note4 = false
+                }
+
+
+            },
+
+            Submit() {
+                    let card = {
+                        name: this.name,
+                        points: [
+                            {name: this.point_1,},
+                            {name: this.point_2,},
+                            {name: this.point_3,},
+                            {name: this.point_4,},
+                            {name: this.point_5,}
+                        ],
+                        date: this.date,
+                        // date: null,
+                        status: 0,
+                        errors: [],
+                    }
+                    eventBus.$emit('addColumn_1', card)
+                    this.name = null;
+                    this.point_1 = null
+                    this.point_2 = null
+                    this.point_3 = null
+                    this.point_4 = null
+                    this.point_5 = null
+                }
             }
-            eventBus.$emit('addColumn_1', card)
-            this.name = null;
-            this.point_1 = null
-            this.point_2 = null
-            this.point_3 = null
-            this.point_4 = null
-            this.point_5 = null
-        },
 
-            // if (this.point_4 === true) {
-            //     return this.point_5 = null
-            // }
-
-        },
-        // removenote() {
-        //
-        //     if (this.point_5 === true) {
-        //         return  this.point_5 = false
-        //     }
-        //
-        //     if (this.point_4 === true) {
-        //         return  this.point_4 = false
-        //     }
-        }
-
-
-)
+})
 
 Vue.component('column_1', {
     template: `
