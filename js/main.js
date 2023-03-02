@@ -42,8 +42,9 @@ Vue.component('column', {
             }
         })
         eventBus.$on('addColumn_3', ColumnCard => {
-            this.column_3.push(ColumnCard)
-            this.column_2.splice(this.column_2.indexOf(ColumnCard), 1)
+                this.column_3.push(ColumnCard)
+                this.column_2.splice(this.column_2.indexOf(ColumnCard), 1)
+
         })
         eventBus.$on('addColumn1-3', ColumnCard => {
             this.column_3.push(ColumnCard)
@@ -239,7 +240,7 @@ Vue.component('column_2', {
         <section id="main" class="main-alt">
             <div class="column column__two">
                 <div class="card" v-for="card in column_2">
-                <p>{{ card.name }}</p>
+                <h3>{{ card.name }}</h3>
                     <div class="tasks" v-for="task in card.points"
                         v-if="task.name != null"
                         @click="changeCompleted(card, task)"
@@ -262,33 +263,25 @@ Vue.component('column_2', {
         changeCompleted(ColumnCard, task) {
             task.completed = true
             ColumnCard.status += 1
-            let count = 0
-            for(let i = 0; i < 5; i++){
-                if (ColumnCard.points[i].title != null) {
-                    count++
-                }
-            }
-            if ((ColumnCard.status / count) * 100 === 100) {
+            console.log("bruh " + ColumnCard.status)
+            if ( this.point_5 != null || ColumnCard.status ===  5) {
                 eventBus.$emit('addColumn_3', ColumnCard)
                 this.column_2.splice(this.column_2.indexOf(ColumnCard), 1)
-                ColumnCard.date = new Date().toLocaleString();
+            } else if ( this.point_5 == null || ColumnCard.status ===  3) {
+                eventBus.$emit('addColumn_3', ColumnCard)
+                this.column_2.splice(this.column_2.indexOf(ColumnCard), 1)
+
             }
         }
     }
 })
-//     methods: {
-//         changeCompleted(card, task) {
-//                 eventBus.$emit('addColumn_3', card)
-//             }
-//         }
-//
-// })
 
 Vue.component('column_3', {
     template: `
         <section id="main" class="main-alt">
             <div class="column column__three">
-                <div class="card" v-for="card in column_3"><p>{{ card.name }}</p>
+                <div class="card" v-for="card in column_3">
+                <h3>{{ card.name }}</h3>
                     <div class="tasks" v-for="task in card.points"
                         v-if="task.name != null"
                         @click="changeCompleted(card, task)"
