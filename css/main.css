@@ -1,11 +1,6 @@
 * {
     box-sizing: border-box;
-    /*font-family: Tahoma;*/
 }
-
-/*body {*/
-/*    background: #a9cdff;*/
-/*}*/
 
 .column {
     float: left;
@@ -90,4 +85,8 @@
 
 .form__name {
     margin-bottom: 25px;
+}
+
+.completed{
+    text-decoration: line-through;
 }
