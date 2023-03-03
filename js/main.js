@@ -59,10 +59,10 @@ Vue.component('newCard', {
     
         <form class="row" @submit.prevent="Submit">
         
-            <p class="main__text">Заметки</p>
-        <div class="form__control">
+            <p class="main_text">Заметки</p>
+        <div class="form_control">
                 
-            <div class="form__name">
+            <div class="form_name">
                 <input required type="text" v-model="name" id="name" placeholder="Введите название заметки"/>
             </div>
             
@@ -72,32 +72,11 @@ Vue.component('newCard', {
 
             <input required type="text"  v-model="point_3" placeholder="Третий пункт"/> 
             <br>
-            <input type="text"  v-model="point_4"  placeholder="Четвертый пункт" v-show ="note4">
+            <input type="text"  v-model="point_4"  placeholder="Четвертый пункт"/>
             <br>
-             <input type="text" v-model="point_5"  placeholder="Пятый пункт" v-show="note5">
-
+             <input type="text" v-model="point_5"  placeholder="Пятый пункт"/>
         </div>
-        <div class="plus_minus_p">
-        <p>Добавить или убавить поле для заметки</p>
-        </div>
-            <div class="minus_plus">
-                 
-                   <p class="plus">
-                        <button type='button' @click="addField"> + </button>
-                   </p>
-                   
-                   <p class="minus">
-                        <button type='button' @click="removeField"> - </button>
-                   </p>
-            </div>
-            
-            <div>                    
-                <p class="sub">
-                        <input type="submit" value="Отправить"> 
-                </p>
-            </div>
-        </div>
-            <div class="form__control">
+            <div class="form_control">
                 <button class="btn">Отправить</button>
             </div>
         </form>
@@ -105,8 +84,6 @@ Vue.component('newCard', {
     `,
         data() {
             return {
-                note4: false,
-                note5: false,
                 name: null,
                 point_1: null,
                 point_2: null,
@@ -117,16 +94,6 @@ Vue.component('newCard', {
             }
         },
         methods: {
-            addField() {
-                if (this.note4 === false) {
-                    console.log('1')
-                    return this.note4 = true
-                } else {
-                    console.log('2')
-                    return this.note5 = true
-                }
-
-            },
             removeField() {
 
                 if (this.note5 === true) {
@@ -170,7 +137,7 @@ Vue.component('newCard', {
 Vue.component('column_1', {
     template: `
         <section id="main" class="main-alt">
-            <div class="column column__one">
+            <div class="column column_one">
                 <div class="card" v-for="card in column_1">
                 <h3>{{ card.name }}</h3>
                     <div class="tasks" v-for="task in card.points"
@@ -195,29 +162,25 @@ Vue.component('column_1', {
         },
         errors: {
             type: Array,
-        }
+        },
     },
     methods: {
         changeCompleted(ColumnCard, task) {
             task.completed = true
             ColumnCard.status += 1
-            let count = 0
-            for(let i = 0; i < 5; i++) {
-                if (ColumnCard.points[i].title != null) {
-                    count++
-                }
-            }
-            console.log(ColumnCard.status)
-            console.log(count)
-            if ((ColumnCard.status / count) * 100 >= 50) {
+            console.log("bruh " + ColumnCard.status)
+            if (ColumnCard.status === 3 && !this.point_5 && !this.point_4) {
+                console.log("1 " + ColumnCard.status)
                 eventBus.$emit('addColumn_2', ColumnCard)
-            }
-            if ((ColumnCard.status / count) * 100 === 100) {
-                ColumnCard.date = new Date().toLocaleString()
-                eventBus.$emit('addColumn1-3', ColumnCard)
+                this.column_1.splice(this.column_1.indexOf(ColumnCard), 1)
+            } else if ( ColumnCard.status === 2 && this.point_5 && this.point_4) {
+                console.log("2 " + ColumnCard.status)
+                eventBus.$emit('addColumn_2', ColumnCard)
+                this.column_1.splice(this.column_1.indexOf(ColumnCard), 1)
+
             }
 
-        },
+        }
     },
 })
 //     methods: {
@@ -238,7 +201,7 @@ Vue.component('column_1', {
 Vue.component('column_2', {
     template: `
         <section id="main" class="main-alt">
-            <div class="column column__two">
+            <div class="column column_two">
                 <div class="card" v-for="card in column_2">
                 <h3>{{ card.name }}</h3>
                     <div class="tasks" v-for="task in card.points"
@@ -267,7 +230,7 @@ Vue.component('column_2', {
             if ( this.point_5 != null || ColumnCard.status ===  5) {
                 eventBus.$emit('addColumn_3', ColumnCard)
                 this.column_2.splice(this.column_2.indexOf(ColumnCard), 1)
-            } else if ( this.point_5 == null || ColumnCard.status ===  3) {
+            } else if ( this.point_5 === null || ColumnCard.status ===  3) {
                 eventBus.$emit('addColumn_3', ColumnCard)
                 this.column_2.splice(this.column_2.indexOf(ColumnCard), 1)
 
@@ -279,7 +242,7 @@ Vue.component('column_2', {
 Vue.component('column_3', {
     template: `
         <section id="main" class="main-alt">
-            <div class="column column__three">
+            <div class="column column_three">
                 <div class="card" v-for="card in column_3">
                 <h3>{{ card.name }}</h3>
                     <div class="tasks" v-for="task in card.points"

@@ -12,7 +12,7 @@
     text-align: center;
 }
 
-.main__text {
+.main_text {
     font-size: 36px;
     line-height: 40px;
     text-align: center;
@@ -36,12 +36,12 @@
     margin: 10px;
 }
 
-.form__control {
+.form_control {
     text-align: center;
     margin: 15px;
 }
 
-.form__control input[type="text"] {
+.form_control input[type="text"] {
     height: 40px;
     width: 300px;
     border: 1px solid black;
@@ -83,7 +83,7 @@
     text-align: center;
 }
 
-.form__name {
+.form_name {
     margin-bottom: 25px;
 }
 
