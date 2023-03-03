@@ -46,10 +46,6 @@ Vue.component('column', {
                 this.column_2.splice(this.column_2.indexOf(ColumnCard), 1)
 
         })
-        eventBus.$on('addColumn1-3', ColumnCard => {
-            this.column_3.push(ColumnCard)
-            this.column_1.splice(this.column_1.indexOf(ColumnCard), 1)
-        })
     }
 })
 
@@ -94,18 +90,6 @@ Vue.component('newCard', {
             }
         },
         methods: {
-            removeField() {
-
-                if (this.note5 === true) {
-                    return this.note5 = false
-                }
-
-                if (this.note4 === true) {
-                    return this.note4 = false
-                }
-
-
-            },
 
             Submit() {
                     let card = {
@@ -165,15 +149,16 @@ Vue.component('column_1', {
         },
     },
     methods: {
-        changeCompleted(ColumnCard, task) {
+        changeCompleted(ColumnCard, task, value) {
             task.completed = true
             ColumnCard.status += 1
+            value = this.point_5
             console.log("bruh " + ColumnCard.status)
-            if (ColumnCard.status === 3 && !this.point_5 && !this.point_4) {
+            if (ColumnCard.status === 2 && value === '' && value.length ==) {
                 console.log("1 " + ColumnCard.status)
                 eventBus.$emit('addColumn_2', ColumnCard)
                 this.column_1.splice(this.column_1.indexOf(ColumnCard), 1)
-            } else if ( ColumnCard.status === 2 && this.point_5 && this.point_4) {
+            } else if (ColumnCard.status === 3){
                 console.log("2 " + ColumnCard.status)
                 eventBus.$emit('addColumn_2', ColumnCard)
                 this.column_1.splice(this.column_1.indexOf(ColumnCard), 1)
@@ -227,10 +212,7 @@ Vue.component('column_2', {
             task.completed = true
             ColumnCard.status += 1
             console.log("bruh " + ColumnCard.status)
-            if ( this.point_5 != null || ColumnCard.status ===  5) {
-                eventBus.$emit('addColumn_3', ColumnCard)
-                this.column_2.splice(this.column_2.indexOf(ColumnCard), 1)
-            } else if ( this.point_5 === null || ColumnCard.status ===  3) {
+             if ( ColumnCard.status ===  3) {
                 eventBus.$emit('addColumn_3', ColumnCard)
                 this.column_2.splice(this.column_2.indexOf(ColumnCard), 1)
 
