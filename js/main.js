@@ -103,12 +103,12 @@ Vue.component('newCard', {
                             {name: this.point_5, completed: false}
                         ],
                         date: null,
+                        // date: null,
                         status: 0,
-                        bruh: 0,
                         errors: [],
                     }
                     eventBus.$emit('addColumn_1', card)
-                    this.name = null
+                    this.name = null;
                     this.point_1 = null
                     this.point_2 = null
                     this.point_3 = null
@@ -153,21 +153,13 @@ Vue.component('column_1', {
         TaskCompleted(ColumnCard, task) {
             task.completed = true
             ColumnCard.status += 1
-            ColumnCard.bruh += 1
-            console.log(ColumnCard.bruh)
-            // let count = 0
-            // for(let i = 0; i < 5; i++){
-            //     count++
-            // }
-            if (ColumnCard.status === 3 && ColumnCard.bruh === 2 ) {
-                console.log("1 условие " + ColumnCard.bruh)
-                eventBus.$emit('addColumn_2', ColumnCard)
-            } else if (ColumnCard.status > 2 && ColumnCard.bruh === 3)  {
-                console.log("2 условие ")
+            let count = 0
+            for (let i = 0; i < 5; i++) {
+                    count++
+            }
+            if ((ColumnCard.status / count) * 100 >= 50) {
                 eventBus.$emit('addColumn_2', ColumnCard)
             }
-
-
         }
     },
 })
@@ -204,7 +196,7 @@ Vue.component('column_2', {
             for(let i = 0; i < 5; i++){
                     count++
                 }
-             if (( ColumnCard.status / 100) * count >= 100 ) {
+             if (( ColumnCard.status / count) * 100 >= 100 ) {
                 eventBus.$emit('addColumn_3', ColumnCard)
                 ColumnCard.date = new Date().toLocaleString()
                 this.column_2.splice(this.column_2.indexOf(ColumnCard), 1)
