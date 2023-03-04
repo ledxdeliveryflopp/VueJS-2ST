@@ -162,11 +162,9 @@ Vue.component('column_1', {
             if (ColumnCard.status === 3 && ColumnCard.bruh === 2 ) {
                 console.log("1 условие " + ColumnCard.bruh)
                 eventBus.$emit('addColumn_2', ColumnCard)
-                this.column_1.splice(this.column_1.indexOf(ColumnCard), 1)
             } else if (ColumnCard.status > 2 && ColumnCard.bruh === 3)  {
                 console.log("2 условие ")
                 eventBus.$emit('addColumn_2', ColumnCard)
-                this.column_1.splice(this.column_1.indexOf(ColumnCard), 1)
             }
 
 
