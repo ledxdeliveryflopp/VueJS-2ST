@@ -154,7 +154,10 @@ Vue.component('column_1', {
             task.completed = true
             ColumnCard.status += 1
             let count = 0
-            if ((ColumnCard.status / count) * 100 >= 50) {
+            for(let i = 0; i < 2; i++){
+                count++
+            }
+            if ((ColumnCard.status / count) * 100 >= 100) {
                 eventBus.$emit('addColumn_2', ColumnCard)
                 this.column_1.splice(this.column_1.indexOf(ColumnCard), 1)
             }
