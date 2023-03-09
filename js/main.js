@@ -69,9 +69,9 @@ Vue.component('newCard', {
 
             <input required type="text"  v-model="point_3" placeholder="Третий пункт"/> 
             <br>
-            <input type="text"  v-model="point_4"  placeholder="Четвертый пункт"/>
+            <input required type="text"  v-model="point_4"  placeholder="Четвертый пункт"/>
             <br>
-             <input type="text" v-model="point_5"  placeholder="Пятый пункт"/>
+             <input required type="text" v-model="point_5"  placeholder="Пятый пункт"/>
         </div>
             <div class="form_control">
                 <button class="btn">Отправить</button>
@@ -153,15 +153,10 @@ Vue.component('column_1', {
         TaskCompleted(ColumnCard, task) {
             task.completed = true
             ColumnCard.status += 1
-            let count = 0
-            if ((ColumnCard.status / count) * 100 >= 50) {
+            if (ColumnCard.status === 3) {
                 eventBus.$emit('addColumn_2', ColumnCard)
-                this.column_1.splice(this.column_1.indexOf(ColumnCard), 1)
-            }
-            if ((ColumnCard.status / count) * 100 === 100) {
-                eventBus.$emit('addColumn1-3', ColumnCard)
-            } 
 
+            }
         }
     },
 })
@@ -201,7 +196,7 @@ Vue.component('column_2', {
              if (( ColumnCard.status / count) * 100 >= 100) {
                 eventBus.$emit('addColumn_3', ColumnCard)
                 ColumnCard.date = new Date().toLocaleString()
-                this.column_2.splice(this.column_2.indexOf(ColumnCard), 1)
+
             
             }
         }
